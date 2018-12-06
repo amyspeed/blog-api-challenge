@@ -22,7 +22,7 @@ app.get('/blog-posts', (req, res) => {
 });
 
 app.post('/blog-posts', jsonParser, (req, res) => {
-    const requiredFields = ['name', 'content', 'author'];
+    const requiredFields = ['title', 'content', 'author'];
     for (let i=0; i<requiredFields.length; i++) {
         const field = requiredFields[i];
         if (!(field in req.body)) {
@@ -31,12 +31,12 @@ app.post('/blog-posts', jsonParser, (req, res) => {
             return res.status(400).send(message);
         }
     }
-    const post = BlogPosts.create(req.body.name, req.body.content, req.body.author);
+    const post = BlogPosts.create(req.body.title, req.body.content, req.body.author);
     res.status(201).json(post);
 });
 
 app.put('/blog-posts/:id', jsonParser, (req, res) => {
-    const requiredFields = ['id', 'name', 'content', 'author'];
+    const requiredFields = ['id', 'title', 'content', 'author'];
     for (let i=0; i<requiredFields.length; i++) {
         const field =requiredFields[i];
         if (!(field in req.body)) {
@@ -53,10 +53,16 @@ app.put('/blog-posts/:id', jsonParser, (req, res) => {
     console.log(`Updating blog post \`${req.params.id}\``);
     BlogPosts.update({
         id: req.params.id,
-        name: req.body.name,
+        title: req.body.title,
         content: req.body.content,
         author: req.body.author
     });
+    res.status(204).end();
+});
+
+app.delete('/blog-posts/:id', (req, res) => {
+    BlogPosts.delete(req.params.id);
+    console.log(`Deleted blog post \`${req.params.id}\``);
     res.status(204).end();
 });
 
