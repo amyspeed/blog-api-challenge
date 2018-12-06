@@ -35,6 +35,31 @@ app.post('/blog-posts', jsonParser, (req, res) => {
     res.status(201).json(post);
 });
 
+app.put('/blog-posts/:id', jsonParser, (req, res) => {
+    const requiredFields = ['id', 'name', 'content', 'author'];
+    for (let i=0; i<requiredFields.length; i++) {
+        const field =requiredFields[i];
+        if (!(field in req.body)) {
+            const message = `Missing \`${field}\` in request body`
+            console.error(message);
+            return res.status(400).send(message);
+        }
+    }
+    if (req.params.id !== req.body.id) {
+        const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
+        console.error(message);
+        return res.status(400).send(message);
+    }
+    console.log(`Updating blog post \`${req.params.id}\``);
+    BlogPosts.update({
+        id: req.params.id,
+        name: req.body.name,
+        content: req.body.content,
+        author: req.body.author
+    });
+    res.status(204).end();
+});
+
 app.listen(process.env.PORT || 8080, () => {
     console.log(`your app is listening on port ${process.env.PORT || 8080}`);
 });
