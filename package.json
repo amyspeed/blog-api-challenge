@@ -4,7 +4,7 @@
   "description": "CRUD Challenge",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --exit",
     "start": "node server.js"
   },
   "author": "",
@@ -13,6 +13,10 @@
     "body-parser": "^1.15.2",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
+    "nodemon": "^1.18.9",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }
